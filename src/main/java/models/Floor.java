@@ -1,5 +1,6 @@
 package main.java.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Floor {
@@ -8,6 +9,7 @@ public class Floor {
 
     public Floor(int floorNumber) {
         this.floorNumber = floorNumber;
+        this.parkingSpots=new ArrayList<>();
     }
 
     public int getFloorNumber() {

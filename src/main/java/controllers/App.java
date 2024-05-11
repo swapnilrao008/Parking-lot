@@ -19,7 +19,7 @@ public class App {
         Floor floor = new Floor(1);
 
         for(int i=1;i<=10;i++) {
-            floor.getParkingSpots().add(new ParkingSpot(i, VehicleType.FOUR_WHEELER, ParkingSpotStatus.AVAILABLE, floor));
+            floor.getParkingSpots().add(new ParkingSpot(i, VehicleType.FOUR_WHEELER, ParkingSpotStatus.FILLED, floor));
         }
         ArrayList<Floor> floors = new ArrayList<>();
         floors.add(floor);
@@ -36,9 +36,11 @@ public class App {
         TicketController ticketController = new TicketController(ticketService);
        parkingLotRepository.getParkingLotMap().put(1l,parkingLot);
        gateRepository.getGates().put(1l,gate);
-       new IssueTicketRequest(VehicleType.FOUR_WHEELER,1,new SimpleParkingSpotAllotmentStratergy());
+        IssueTicketRequest issueTicketRequest = new IssueTicketRequest(VehicleType.FOUR_WHEELER, 1, 1, new SimpleParkingSpotAllotmentStratergy());
 
-        ticketController.issueTicket();
+        IssueTicketResponse issueTicketResponse = ticketController.issueTicket(issueTicketRequest);
+        System.out.println(issueTicketResponse);
+
 
     }
 }

@@ -1,13 +1,26 @@
 package main.java.stratergies;
 
-import main.java.models.ParkingSpot;
-import main.java.models.VehicleType;
+import main.java.Exceptions.ParkingLotFullException;
+import main.java.models.*;
 
 public class SimpleParkingSpotAllotmentStratergy implements ParkingSpaceAllotmentStratergy{
 
     @Override
-    public ParkingSpot getParkingSpot(VehicleType vehicleType, Long parkingLotId) {
+    public ParkingSpot getParkingSpot(VehicleType vehicleType, ParkingLot parkingLotId) throws ParkingLotFullException {
 
-        return null;
+        for(Floor floor: parkingLotId.getFloors())
+        {
+            for (ParkingSpot parkingSpot: floor.getParkingSpots())
+            {
+                if(parkingSpot.getStatus().equals(ParkingSpotStatus.AVAILABLE))
+                {
+                    if(parkingSpot.getVehicleType().equals(vehicleType))
+                    {
+                        return parkingSpot;
+                    }
+                }
+            }
+        }
+        throw new ParkingLotFullException();
     }
 }

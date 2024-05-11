@@ -1,6 +1,7 @@
 package main.java.services;
 
 import main.java.Exceptions.GateNotFoundException;
+import main.java.Exceptions.ParkingLotFullException;
 import main.java.Exceptions.ParkingLotNotFoundException;
 import main.java.Repositories.GateRepository;
 import main.java.Repositories.ParkingLotRepository;
@@ -26,7 +27,7 @@ public class TicketService {
         this.ticketRepositories = ticketRepositories;
     }
 
-    public Ticket issueTicket(IssueTicketRequest request) throws GateNotFoundException, ParkingLotNotFoundException {
+    public Ticket issueTicket(IssueTicketRequest request) throws GateNotFoundException, ParkingLotNotFoundException, ParkingLotFullException {
         Ticket ticket = new Ticket();
         ticket.setEntryTime(new Date());
         Gate gate = gateRepository.findGateById(request.getGateId());
@@ -40,7 +41,7 @@ public class TicketService {
         ticket.setVehicle(vehicle);
         ParkingLot parkingLot = parkingLotRepository.getParkingLotById(request.getParkingLotId());
         ParkingSpaceAllotmentStratergy parkingSpaceAllotmentStratergy = request.getParkingSpaceAllotmentStratergy();
-        ParkingSpot parkingSpot = parkingSpaceAllotmentStratergy.getParkingSpot(request.getVehicleType(), request.getParkingLotId());
+        ParkingSpot parkingSpot = parkingSpaceAllotmentStratergy.getParkingSpot(request.getVehicleType(), parkingLot);
         ticket.setParkingSpot(parkingSpot);
         ticket.setNumber(request.getVehicleNumber()+ UUID.randomUUID());
         ticketRepositories.save(ticket);
